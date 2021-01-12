@@ -19,3 +19,6 @@
 [submodule "Cool/AspectRatio"]
 	path = Cool/AspectRatio
 	url = https://github.com/CoolOpenGL/AspectRatio
+[submodule "Cool/LoadImage"]
+	path = Cool/LoadImage
+	url = https://github.com/CoolOpenGL/LoadImage

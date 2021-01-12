@@ -5,7 +5,7 @@
 
 int main() {
 	Cool::Log::Initialize();
-	Cool::AppManager appManager("Cool - Demo App");
+	Cool::AppManager appManager("Computer Vision");
 	App app;
 	return appManager.run(app);
 }

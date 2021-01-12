@@ -2,6 +2,7 @@
 
 #include <Cool/App/IApp.h>
 #include <Cool/OpenGL/Shader.h>
+#include <Cool/OpenGL/Texture.h>
 #include <Cool/Renderer_Fullscreen/Renderer_Fullscreen.h>
 
 using namespace Cool;
@@ -18,7 +19,8 @@ public:
 
 private:
 	Renderer_Fullscreen m_renderer;
-	Shader m_shader;
+	Shader m_shaderShowTexture;
+	Texture m_imageTex;
 	glm::vec3 m_bgColor = glm::vec3(0.478f, 0.674f, 0.792f);
 #ifndef NDEBUG
 	bool m_bShow_Debug = true;

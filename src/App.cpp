@@ -2,13 +2,21 @@
 
 #include <Cool/App/RenderState.h>
 #include <Cool/App/Input.h>
+#include <Cool/LoadImage/LoadImage.h>
 
 App::App()
-	: m_shader("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/test.frag")
+	: m_shaderShowTexture("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/ShowTexture.frag")
 {
 	// glEnable(GL_DEPTH_TEST);
 	// glEnable(GL_BLEND);
 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Please note that the blending is WRONG for the alpha channel (but it doesn't matter in most cases) The correct call would be glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE) a.k.a. newAlpha = srcAlpha + dstAlpha - srcAlpha*dstAlpha
+	m_imageTex.genTexture();
+	int w, h;
+	unsigned char* data = LoadImage::Load("img/einstein.jpg", &w, &h);
+	m_imageTex.uploadRGBA(w, h, data);
+	LoadImage::Free(data);
+	RenderState::setPreviewAspectRatio(w / (float)h);
+	RenderState::setPreviewAspectRatioControl(true);
 }
 
 void App::update() {
@@ -16,10 +24,12 @@ void App::update() {
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_shader.bind();
+		m_shaderShowTexture.bind();
+		m_imageTex.bindToSlot(0);
+		m_shaderShowTexture.setUniform1i("u_TextureSlot", 0);
 		m_renderer.render();
 	}
-	m_renderer.end();
+	m_renderer.end(GL_NEAREST);
 }
 
 void App::ImGuiWindows() {
