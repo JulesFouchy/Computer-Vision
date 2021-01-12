@@ -4,8 +4,11 @@
 #include <Cool/App/Input.h>
 #include <Cool/LoadImage/LoadImage.h>
 
+#include <iostream>
+
 App::App()
-	: m_shaderCanny("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Canny.frag")
+	: m_shaderApplyGaussKernel1D("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Apply1DGaussKernel.frag"),
+	  m_gaussKernel(8.f)
 {
 	// Load Image
 	m_imageTex.genTexture();
@@ -25,11 +28,11 @@ void App::update() {
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderCanny.bind();
-		m_shaderCanny.setUniform1f("sigma", m_sigma);
+		m_shaderApplyGaussKernel1D.bind();
 		m_imageTex.bindToSlot(0);
-		m_shaderCanny.setUniform1i("u_TextureSlot", 0);
-		m_shaderCanny.setUniform1i("u_bHorizontal", 1);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_TextureSlot", 0);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_bHorizontal", 1);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
 		m_renderer.render();
 	}
 	m_renderer.renderBuffer().blitTo(m_texFB);
@@ -38,11 +41,12 @@ void App::update() {
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderCanny.bind();
-		m_shaderCanny.setUniform1f("sigma", m_sigma);
+		m_shaderApplyGaussKernel1D.bind();
+		m_shaderApplyGaussKernel1D.setUniform1f("sigma", 8);
 		m_texFB.attachTextureToSlot(0);
-		m_shaderCanny.setUniform1i("u_TextureSlot", 0);
-		m_shaderCanny.setUniform1i("u_bHorizontal", 0);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_TextureSlot", 0);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_bHorizontal", 0);
+		m_shaderApplyGaussKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
 		m_renderer.render();
 	}
 	m_renderer.end();
@@ -50,7 +54,7 @@ void App::update() {
 
 void App::ImGuiWindows() {
 	ImGui::Begin("Canny");
-	ImGui::SliderFloat("Sigma", &m_sigma, 0.1, 100);
+	m_gaussKernel.ImGui();
 	ImGui::End();
 #ifndef NDEBUG
 	if (m_bShow_Debug) {
