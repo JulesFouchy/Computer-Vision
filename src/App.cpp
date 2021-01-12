@@ -19,10 +19,15 @@ App::App()
 	//
 	RenderState::setPreviewAspectRatio(w / (float)h);
 	RenderState::setPreviewAspectRatioControl(true);
+	RenderState::setExportSize(w, h);
 	m_texFB.setSize({ w, h });
 }
 
 void App::update() {
+	render();
+}
+
+void App::render() {
 	// X blur pass
 	m_renderer.begin();
 	{
@@ -52,10 +57,21 @@ void App::update() {
 	m_renderer.end();
 }
 
+void App::exportImage() {
+	m_exporter.beginImageExport();
+	render();
+	m_exporter.endImageExport(m_renderer.renderBuffer());
+}
+
 void App::ImGuiWindows() {
 	ImGui::Begin("Canny");
 	m_gaussKernel.ImGui();
+	if (ImGui::Button("Save Image")) {
+		m_exporter.setIsExportImageWindowOpen(true);
+	}
 	ImGui::End();
+	if (m_exporter.ImGuiExportImageWindow())
+		exportImage();
 #ifndef NDEBUG
 	if (m_bShow_Debug) {
 		ImGui::Begin("Debug", &m_bShow_Debug);
@@ -124,7 +140,9 @@ void App::onEvent(const SDL_Event& e) {
 
 		case SDL_KEYDOWN:
 			if (!ImGui::GetIO().WantTextInput) {
-
+				if (e.key.keysym.sym == 's') {
+					m_exporter.setIsExportImageWindowOpen(true);
+				}
 			}
 			break;
 

@@ -15,6 +15,9 @@ set(COOL_MODULES
     Renderer_Fullscreen
     File
     LoadImage
+    ExportImage
+    Exporter
+    ImGui
 )
 
 # Set the path where all the Cool modules are stored. It is required by all the Cool IncludeMe.cmake files
