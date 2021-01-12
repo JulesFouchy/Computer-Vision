@@ -3,6 +3,7 @@
 #include <Cool/App/IApp.h>
 #include <Cool/OpenGL/Shader.h>
 #include <Cool/OpenGL/Texture.h>
+#include <Cool/OpenGL/TextureFB.h>
 #include <Cool/Renderer_Fullscreen/Renderer_Fullscreen.h>
 
 using namespace Cool;
@@ -20,8 +21,9 @@ public:
 private:
 	Renderer_Fullscreen m_renderer;
 	Texture m_imageTex;
+	TextureFB m_texFB;
 	Shader m_shaderCanny;
-	float m_sigma = 1.;
+	float m_sigma = 8;
 	glm::vec3 m_bgColor = glm::vec3(0.478f, 0.674f, 0.792f);
 #ifndef NDEBUG
 	bool m_bShow_Debug = true;
