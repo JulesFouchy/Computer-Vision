@@ -19,8 +19,9 @@ public:
 
 private:
 	Renderer_Fullscreen m_renderer;
-	Shader m_shaderShowTexture;
 	Texture m_imageTex;
+	Shader m_shaderCanny;
+	float m_sigma = 1.;
 	glm::vec3 m_bgColor = glm::vec3(0.478f, 0.674f, 0.792f);
 #ifndef NDEBUG
 	bool m_bShow_Debug = true;

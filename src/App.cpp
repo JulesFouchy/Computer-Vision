@@ -5,14 +5,14 @@
 #include <Cool/LoadImage/LoadImage.h>
 
 App::App()
-	: m_shaderShowTexture("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/ShowTexture.frag")
+	: m_shaderCanny("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Canny.frag")
 {
 	// glEnable(GL_DEPTH_TEST);
 	// glEnable(GL_BLEND);
 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Please note that the blending is WRONG for the alpha channel (but it doesn't matter in most cases) The correct call would be glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE) a.k.a. newAlpha = srcAlpha + dstAlpha - srcAlpha*dstAlpha
 	m_imageTex.genTexture();
 	int w, h;
-	unsigned char* data = LoadImage::Load("img/einstein.jpg", &w, &h);
+	unsigned char* data = LoadImage::Load("img/testgauss.png", &w, &h);
 	m_imageTex.uploadRGBA(w, h, data);
 	LoadImage::Free(data);
 	RenderState::setPreviewAspectRatio(w / (float)h);
@@ -23,16 +23,20 @@ void App::update() {
 	m_renderer.begin();
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_shaderShowTexture.bind();
+		glClear(GL_COLOR_BUFFER_BIT);
+		m_shaderCanny.bind();
+		m_shaderCanny.setUniform1f("sigma", m_sigma);
 		m_imageTex.bindToSlot(0);
-		m_shaderShowTexture.setUniform1i("u_TextureSlot", 0);
+		m_shaderCanny.setUniform1i("u_TextureSlot", 0);
 		m_renderer.render();
 	}
 	m_renderer.end(GL_NEAREST);
 }
 
 void App::ImGuiWindows() {
+	ImGui::Begin("Canny");
+	ImGui::SliderFloat("Sigma", &m_sigma, 0.1, 100);
+	ImGui::End();
 #ifndef NDEBUG
 	if (m_bShow_Debug) {
 		ImGui::Begin("Debug", &m_bShow_Debug);
