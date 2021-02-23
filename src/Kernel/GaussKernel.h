@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <Cool/OpenGL/SSBO.h>
-#include "Kernel/Kernel1D.h"
+#include "Kernel1D.h"
 
 using namespace Cool;
 

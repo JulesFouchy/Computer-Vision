@@ -7,7 +7,7 @@
 #include <Cool/Renderer_Fullscreen/Renderer_Fullscreen.h>
 #include <Cool/Exporter.h>
 
-#include "GaussKernel1D.h"
+#include "Kernel/GaussKernel.h"
 
 using namespace Cool;
 

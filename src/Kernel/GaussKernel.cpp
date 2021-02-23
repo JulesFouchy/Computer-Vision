@@ -1,4 +1,4 @@
-#include "GaussKernel1D.h"
+#include "GaussKernel.h"
 
 #include <cmath>
 
