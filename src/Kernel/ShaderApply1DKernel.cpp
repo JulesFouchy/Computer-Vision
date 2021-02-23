@@ -12,7 +12,7 @@ uniform bool u_bHorizontal; // decide if we do an horizontal or vertical pass
 in vec2 vTexCoords;
 uniform sampler2D u_TextureSlot;
 
-layout(std430, binding=0) buffer gaussKernel{
+layout(std430, binding=)V0G0N"+std::to_string(binding)+ R"V0G0N() buffer gaussKernel{
    float kernel[];
 };
 
