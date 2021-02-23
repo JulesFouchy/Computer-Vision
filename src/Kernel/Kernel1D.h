@@ -13,8 +13,7 @@ public:
 	Kernel1D(unsigned int binding);
 	~Kernel1D() = default;
 
-	void apply(Texture& inputTexture, Renderer_Fullscreen& renderer, bool bHorizontal);
-	void apply(TextureFB& inputTextureFB, Renderer_Fullscreen& renderer, bool bHorizontal);
+	void apply(GLuint textureID, Renderer_Fullscreen& renderer, bool bHorizontal);
 
 protected:
 	int m_kernelSize;
