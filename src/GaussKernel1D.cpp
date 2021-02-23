@@ -3,7 +3,7 @@
 #include <cmath>
 
 GaussKernel1D::GaussKernel1D(unsigned int binding, float sigma)
-	: m_kernelSSBO(binding, GL_STATIC_READ)
+	: m_kernelSSBO(binding)
 {
 	setSigma(sigma);
 }
@@ -25,7 +25,7 @@ void GaussKernel1D::setSigma(float sigma) {
 		kernel[i] = exp(-t * t / twoSigmaSq) / normalizationConstant;
 	}
 	// Uploda data to the SSBO
-	m_kernelSSBO.uploadData(kernel.size(), kernel.data());
+	m_kernelSSBO.uploadData(kernel, GL_STATIC_READ);
 }
 
 void GaussKernel1D::ImGui() {
