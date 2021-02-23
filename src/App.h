@@ -21,7 +21,7 @@ public:
 	void exportImage();
 	void ImGuiWindows() override;
 	void ImGuiMenus() override;
-	void onEvent(const SDL_Event & e) override;
+	void onKeyboardEvent(int key, int scancode, int action, int mods) override;
 
 private:
 	Renderer_Fullscreen m_renderer;
