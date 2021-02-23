@@ -3,7 +3,6 @@
 #include "Kernel/ShaderApply1DKernel.h"
 
 namespace Cool {
-	class Texture;
 	class TextureFB;
 	class Renderer_Fullscreen;
 }
@@ -14,6 +13,8 @@ public:
 	~Kernel1D() = default;
 
 	void apply(GLuint textureID, Renderer_Fullscreen& renderer, bool bHorizontal);
+	/// Applies in both directions
+	void apply(GLuint inputTextureID, Renderer_Fullscreen& renderer, TextureFB& intermediateTextureFB);
 
 protected:
 	int m_kernelSize;

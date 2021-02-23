@@ -27,13 +27,8 @@ void App::update() {
 }
 
 void App::render() {
-	// X blur pass
 	m_renderer.begin();
-	m_gaussKernel.apply(m_imageTex.ID(), m_renderer, true);
-	m_renderer.renderBuffer().blitTo(m_texFB);
-	// Y blur pass
-	m_renderer.begin();
-	m_gaussKernel.apply(m_texFB.textureID(), m_renderer, false);
+	m_gaussKernel.apply(m_imageTex.ID(), m_renderer, m_texFB);
 	m_renderer.end();
 }
 
