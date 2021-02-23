@@ -1,9 +1,12 @@
 #include "GaussKernel1D.h"
 
 #include <cmath>
+#include "Cool/OpenGL/Texture.h"
+#include "Cool/OpenGL/TextureFB.h"
+#include "Cool/Renderer_Fullscreen/Renderer_Fullscreen.h"
 
 GaussKernel1D::GaussKernel1D(unsigned int binding, float sigma)
-	: m_kernelSSBO(binding)
+	: m_kernelSSBO(binding), m_shader(binding)
 {
 	setSigma(sigma);
 }
@@ -26,6 +29,24 @@ void GaussKernel1D::setSigma(float sigma) {
 	}
 	// Uploda data to the SSBO
 	m_kernelSSBO.uploadData(kernel, GL_STATIC_READ);
+}
+
+void GaussKernel1D::apply(Texture& inputTexture, Renderer_Fullscreen& renderer, bool bHorizontal) {
+	m_shader->bind();
+	inputTexture.attachToSlot(0);
+	m_shader->setUniform1i("u_TextureSlot", 0);
+	m_shader->setUniform1i("u_bHorizontal", bHorizontal ? 1 : 0);
+	m_shader->setUniform1i("u_kernelSize", getSize());
+	renderer.render();
+}
+
+void GaussKernel1D::apply(TextureFB& inputTextureFB, Renderer_Fullscreen& renderer, bool bHorizontal) {
+	m_shader->bind();
+	inputTextureFB.attachTextureToSlot(0);
+	m_shader->setUniform1i("u_TextureSlot", 0);
+	m_shader->setUniform1i("u_bHorizontal", bHorizontal ? 1 : 0);
+	m_shader->setUniform1i("u_kernelSize", getSize());
+	renderer.render();
 }
 
 void GaussKernel1D::ImGui() {

@@ -4,13 +4,10 @@
 #include <Cool/App/Input.h>
 #include <Cool/LoadImage/LoadImage.h>
 
-#include <iostream>
-
 static constexpr unsigned int GAUSS_KERNEL_BINDING = 0;
 
 App::App()
-	: m_shaderApplyKernel1D("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Apply1DKernel.frag"),
-	  m_gaussKernel(GAUSS_KERNEL_BINDING, 8.f)
+	: m_gaussKernel(GAUSS_KERNEL_BINDING, 8.f)
 {
 	// Load Image
 	m_imageTex.genTexture();
@@ -32,29 +29,11 @@ void App::update() {
 void App::render() {
 	// X blur pass
 	m_renderer.begin();
-	{
-		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderApplyKernel1D.bind();
-		m_imageTex.bindToSlot(0);
-		m_shaderApplyKernel1D.setUniform1i("u_TextureSlot", 0);
-		m_shaderApplyKernel1D.setUniform1i("u_bHorizontal", 1);
-		m_shaderApplyKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
-		m_renderer.render();
-	}
+	m_gaussKernel.apply(m_imageTex, m_renderer, true);
 	m_renderer.renderBuffer().blitTo(m_texFB);
 	// Y blur pass
 	m_renderer.begin();
-	{
-		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderApplyKernel1D.bind();
-		m_texFB.attachTextureToSlot(0);
-		m_shaderApplyKernel1D.setUniform1i("u_TextureSlot", 0);
-		m_shaderApplyKernel1D.setUniform1i("u_bHorizontal", 0);
-		m_shaderApplyKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
-		m_renderer.render();
-	}
+	m_gaussKernel.apply(m_texFB, m_renderer, false);
 	m_renderer.end();
 }
 
