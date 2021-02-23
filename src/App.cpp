@@ -7,7 +7,7 @@
 #include <iostream>
 
 App::App()
-	: m_shaderApplyGaussKernel1D("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Apply1DGaussKernel.frag"),
+	: m_shaderApplyKernel1D("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Apply1DKernel.frag"),
 	  m_gaussKernel(8.f)
 {
 	// Load Image
@@ -33,11 +33,11 @@ void App::render() {
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderApplyGaussKernel1D.bind();
+		m_shaderApplyKernel1D.bind();
 		m_imageTex.bindToSlot(0);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_TextureSlot", 0);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_bHorizontal", 1);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
+		m_shaderApplyKernel1D.setUniform1i("u_TextureSlot", 0);
+		m_shaderApplyKernel1D.setUniform1i("u_bHorizontal", 1);
+		m_shaderApplyKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
 		m_renderer.render();
 	}
 	m_renderer.renderBuffer().blitTo(m_texFB);
@@ -46,12 +46,11 @@ void App::render() {
 	{
 		glClearColor(m_bgColor.r, m_bgColor.g, m_bgColor.b, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		m_shaderApplyGaussKernel1D.bind();
-		m_shaderApplyGaussKernel1D.setUniform1f("sigma", 8);
+		m_shaderApplyKernel1D.bind();
 		m_texFB.attachTextureToSlot(0);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_TextureSlot", 0);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_bHorizontal", 0);
-		m_shaderApplyGaussKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
+		m_shaderApplyKernel1D.setUniform1i("u_TextureSlot", 0);
+		m_shaderApplyKernel1D.setUniform1i("u_bHorizontal", 0);
+		m_shaderApplyKernel1D.setUniform1i("u_kernelSize", m_gaussKernel.getSize());
 		m_renderer.render();
 	}
 	m_renderer.end();

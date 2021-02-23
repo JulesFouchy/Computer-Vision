@@ -27,7 +27,7 @@ private:
 	Renderer_Fullscreen m_renderer;
 	Texture m_imageTex;
 	TextureFB m_texFB;
-	Shader m_shaderApplyGaussKernel1D;
+	Shader m_shaderApplyKernel1D;
 	GaussKernel1D m_gaussKernel;
 	Exporter m_exporter;
 	glm::vec3 m_bgColor = glm::vec3(0.478f, 0.674f, 0.792f);
