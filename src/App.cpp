@@ -6,9 +6,11 @@
 
 #include <iostream>
 
+static constexpr unsigned int GAUSS_KERNEL_BINDING = 0;
+
 App::App()
 	: m_shaderApplyKernel1D("Cool/Renderer_Fullscreen/fullscreen.vert", "shaders/Apply1DKernel.frag"),
-	  m_gaussKernel(8.f)
+	  m_gaussKernel(GAUSS_KERNEL_BINDING, 8.f)
 {
 	// Load Image
 	m_imageTex.genTexture();

@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-GaussKernel1D::GaussKernel1D(float sigma)
-	: m_kernelSSBO(0, GL_STATIC_READ)
+GaussKernel1D::GaussKernel1D(unsigned int binding, float sigma)
+	: m_kernelSSBO(binding, GL_STATIC_READ)
 {
 	setSigma(sigma);
 }

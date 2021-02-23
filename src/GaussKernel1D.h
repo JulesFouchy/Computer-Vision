@@ -7,7 +7,7 @@ using namespace Cool;
 
 class GaussKernel1D {
 public:
-	GaussKernel1D(float sigma);
+	GaussKernel1D(unsigned int binding, float sigma);
 	~GaussKernel1D() = default;
 	void setSigma(float sigma);
 	inline const SSBO<float>& get() { return m_kernelSSBO; }
